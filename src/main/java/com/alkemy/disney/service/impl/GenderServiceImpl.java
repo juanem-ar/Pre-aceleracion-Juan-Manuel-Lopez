@@ -4,6 +4,7 @@ import com.alkemy.disney.dto.GenderDTO;
 import com.alkemy.disney.dto.MovieDTO;
 import com.alkemy.disney.entity.GenderEntity;
 import com.alkemy.disney.entity.MovieEntity;
+import com.alkemy.disney.exception.ParamNotFound;
 import com.alkemy.disney.mapper.GenderMapper;
 import com.alkemy.disney.repository.GenderRepository;
 import com.alkemy.disney.service.GenderService;
@@ -35,6 +36,7 @@ public class GenderServiceImpl implements GenderService {
     }
 
     public GenderDTO update(Long id, GenderDTO gender){
+        isCorrect(id);
         GenderEntity entityId = genderRepository.getReferenceById(id);
         GenderEntity entity = genderMapper.update(entityId,gender);
         GenderEntity entityUpdated = genderRepository.save(entity);
@@ -44,6 +46,13 @@ public class GenderServiceImpl implements GenderService {
 
     @Override
     public void delete(Long id) {
-    this.genderRepository.deleteById(id);
+        isCorrect(id);
+        this.genderRepository.deleteById(id);
+    }
+
+    public void isCorrect(Long id){
+        if(!genderRepository.existsById(id)){
+            throw new ParamNotFound("Invalid id");
+        }
     }
 }

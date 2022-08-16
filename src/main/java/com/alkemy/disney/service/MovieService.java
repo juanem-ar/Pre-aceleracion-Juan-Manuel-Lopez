@@ -20,4 +20,6 @@ public interface MovieService {
 
     List<MovieBasicDTO> getByFilters(String title, String genre, String order);
 
+    void isCorrect(Long id);
+    void areCorrect(Long idMovie, Long idFigure);
 }

@@ -32,12 +32,12 @@ public class MovieSpecification {
                         )
                 );
             }
+
             if (StringUtils.hasLength(filtersDTO.getGenre())){
+                Integer age = Integer.parseInt(filtersDTO.getGenre());
+
                 predicates.add(
-                        criteriaBuilder.like(
-                                criteriaBuilder.lower(root.get("genre")),
-                                "%" + filtersDTO.getGenre().toLowerCase() + "%"
-                        )
+                        criteriaBuilder.equal(root.get("gender"), age)
                 );
             }
 

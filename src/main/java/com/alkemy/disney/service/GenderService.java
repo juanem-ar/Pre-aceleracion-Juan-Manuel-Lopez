@@ -9,4 +9,5 @@ public interface GenderService {
     List<GenderDTO> getAllGenders();
     GenderDTO update(Long id, GenderDTO gender);
     void delete (Long id);
+    void isCorrect(Long id);
 }

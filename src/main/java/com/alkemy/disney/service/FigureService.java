@@ -17,5 +17,6 @@ public interface FigureService {
     void delete (Long id);
     List<FigureBasicDTO> getByFilters(String name, String age, String weight, Set<Long> movies, String order);
 
+    void isCorrect(Long id);
 
 }

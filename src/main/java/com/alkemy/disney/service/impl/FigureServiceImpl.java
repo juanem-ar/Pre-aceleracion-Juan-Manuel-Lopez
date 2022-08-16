@@ -5,6 +5,7 @@ import com.alkemy.disney.dto.FigureDTO;
 import com.alkemy.disney.dto.FigureFiltersDTO;
 import com.alkemy.disney.entity.FigureEntity;
 import com.alkemy.disney.entity.MovieEntity;
+import com.alkemy.disney.exception.ParamNotFound;
 import com.alkemy.disney.mapper.FigureMapper;
 import com.alkemy.disney.repository.FigureRepository;
 import com.alkemy.disney.repository.specifications.FigureSpecification;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -37,13 +39,16 @@ public class FigureServiceImpl implements FigureService {
     }
 
     public FigureDTO getFigureById(Long id) {
+        isCorrect(id);
         FigureEntity entity = figureRepository.getReferenceById(id);
+
         FigureDTO result = figureMapper.figureEntity2DTO(entity, true);
         return result;
     }
 
     @Override
     public FigureDTO update(Long id, FigureDTO figure) {
+        isCorrect(id);
         FigureEntity entityId = figureRepository.getReferenceById(id);
         FigureEntity entity = figureMapper.update(entityId,figure);
         FigureEntity entityUpdated = figureRepository.save(entity);
@@ -53,7 +58,9 @@ public class FigureServiceImpl implements FigureService {
 
     @Override
     public void delete(Long id) {
+        isCorrect(id);
         this.figureRepository.deleteById(id);
+
     }
 
     public List<FigureBasicDTO> getByFilters(String name, String age, String weight, Set<Long> movies, String order){
@@ -63,5 +70,9 @@ public class FigureServiceImpl implements FigureService {
         return dtos;
     }
 
-
+    public void isCorrect(Long id){
+        if(!figureRepository.existsById(id)){
+            throw new ParamNotFound("Invalid id");
+        }
+    }
 }

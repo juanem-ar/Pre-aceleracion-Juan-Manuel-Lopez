@@ -4,6 +4,7 @@ import com.alkemy.disney.dto.*;
 import com.alkemy.disney.entity.FigureEntity;
 import com.alkemy.disney.entity.GenderEntity;
 import com.alkemy.disney.entity.MovieEntity;
+import com.alkemy.disney.exception.ParamNotFound;
 import com.alkemy.disney.mapper.GenderMapper;
 import com.alkemy.disney.mapper.MovieMapper;
 import com.alkemy.disney.repository.FigureRepository;
@@ -40,6 +41,7 @@ public class MovieServiceImpl implements MovieService {
     }
     @Override
     public MovieDTO getMovieById(Long id) {
+        isCorrect(id);
         MovieEntity entity = movieRepository.getReferenceById(id);
         MovieDTO result = movieMapper.movieEntity2DTO(entity, true);
         return result;
@@ -47,6 +49,7 @@ public class MovieServiceImpl implements MovieService {
 
 
     public MovieDTO update(Long id, MovieDTO movie) {
+        isCorrect(id);
         MovieEntity entityId = movieRepository.getReferenceById(id);
         MovieEntity entity = movieMapper.update(entityId,movie);
         MovieEntity entityUpdated = movieRepository.save(entity);
@@ -55,11 +58,13 @@ public class MovieServiceImpl implements MovieService {
     }
     @Override
     public void delete(Long id) {
+        isCorrect(id);
         this.movieRepository.deleteById(id);
     }
 
     @Override
     public MovieDTO addFigure(Long idMovie, Long idFigure) {
+        areCorrect(idMovie, idFigure);
         MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
         movieEntity.addFigure(figureEntity);
@@ -70,6 +75,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDTO removeFigure(Long idMovie, Long idFigure) {
+        areCorrect(idMovie, idFigure);
         MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
         movieEntity.removeFigure(figureEntity);
@@ -82,5 +88,17 @@ public class MovieServiceImpl implements MovieService {
         List<MovieEntity> entities = this.movieRepository.findAll(this.movieSpecification.getByFilters(filtersDTO));
         List<MovieBasicDTO> dtos = this.movieMapper.movieEntitySet2DTOBasicList(entities);
         return dtos;
+    }
+    public void isCorrect(Long id){
+        if(!movieRepository.existsById(id)){
+            throw new ParamNotFound("Invalid id");
+        }
+    }
+    public void areCorrect(Long idMovie, Long idFigure){
+        if(!movieRepository.existsById(idMovie)){
+            throw new ParamNotFound("Invalid Movie ID");
+        }else if(!movieRepository.existsById(idFigure)){
+            throw new ParamNotFound("Invalid Character ID");
+        }
     }
 }
