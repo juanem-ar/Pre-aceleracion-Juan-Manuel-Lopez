@@ -1,15 +1,16 @@
 package com.alkemy.disney.service.impl;
 
-import com.alkemy.disney.dto.FigureDTO;
-import com.alkemy.disney.dto.GenderDTO;
-import com.alkemy.disney.dto.MovieDTO;
+import com.alkemy.disney.dto.*;
 import com.alkemy.disney.entity.FigureEntity;
 import com.alkemy.disney.entity.GenderEntity;
 import com.alkemy.disney.entity.MovieEntity;
 import com.alkemy.disney.mapper.GenderMapper;
 import com.alkemy.disney.mapper.MovieMapper;
+import com.alkemy.disney.repository.FigureRepository;
 import com.alkemy.disney.repository.GenderRepository;
 import com.alkemy.disney.repository.MovieRepository;
+import com.alkemy.disney.repository.specifications.MovieSpecification;
+import com.alkemy.disney.service.FigureService;
 import com.alkemy.disney.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,10 @@ public class MovieServiceImpl implements MovieService {
     private MovieMapper movieMapper;
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private MovieSpecification movieSpecification;
+    @Autowired
+    private FigureRepository figureRepository;
 
     @Override
     public MovieDTO save(MovieDTO dto) {
@@ -34,11 +39,13 @@ public class MovieServiceImpl implements MovieService {
         return result;
     }
     @Override
-    public List<MovieDTO> getAllMovies() {
-        List<MovieEntity> entities = movieRepository.findAll();
-        List<MovieDTO> result = movieMapper.movieEntityList2DTOList(entities, true);
+    public MovieDTO getMovieById(Long id) {
+        MovieEntity entity = movieRepository.getReferenceById(id);
+        MovieDTO result = movieMapper.movieEntity2DTO(entity, true);
         return result;
     }
+
+
     public MovieDTO update(Long id, MovieDTO movie) {
         MovieEntity entityId = movieRepository.getReferenceById(id);
         MovieEntity entity = movieMapper.update(entityId,movie);
@@ -49,5 +56,31 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void delete(Long id) {
         this.movieRepository.deleteById(id);
+    }
+
+    @Override
+    public MovieDTO addFigure(Long idMovie, Long idFigure) {
+        MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
+        FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
+        movieEntity.addFigure(figureEntity);
+        MovieEntity movieSaved = movieRepository.save(movieEntity);
+        MovieDTO dto = movieMapper.movieEntity2DTO(movieSaved, true);
+        return dto;
+    }
+
+    @Override
+    public MovieDTO removeFigure(Long idMovie, Long idFigure) {
+        MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
+        FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
+        movieEntity.removeFigure(figureEntity);
+        MovieEntity movieSaved = movieRepository.save(movieEntity);
+        MovieDTO dto = movieMapper.movieEntity2DTO(movieSaved, true);
+        return dto;
+    }
+    public List<MovieBasicDTO> getByFilters(String title, String genre, String order){
+        MovieFiltersDTO filtersDTO = new MovieFiltersDTO(title, genre, order);
+        List<MovieEntity> entities = this.movieRepository.findAll(this.movieSpecification.getByFilters(filtersDTO));
+        List<MovieBasicDTO> dtos = this.movieMapper.movieEntitySet2DTOBasicList(entities);
+        return dtos;
     }
 }

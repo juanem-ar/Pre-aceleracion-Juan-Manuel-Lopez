@@ -1,21 +1,14 @@
 package com.alkemy.disney.controller;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.alkemy.disney.dto.FigureBasicDTO;
 import com.alkemy.disney.dto.FigureDTO;
-import com.alkemy.disney.entity.MovieEntity;
 import com.alkemy.disney.service.FigureService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("characters")
@@ -24,13 +17,13 @@ public class FigureController {
     @Autowired
     private FigureService figureService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<FigureDTO>> getAll(){
-        List<FigureDTO> figures = figureService.getAllFigures();
+    @GetMapping("/{id}")
+    public ResponseEntity<FigureDTO> getFigureById(@PathVariable Long id){
+        FigureDTO figures = figureService.getFigureById(id);
         return ResponseEntity.ok().body(figures);
     }
 
-    @PostMapping //Agrego ("/cualquiera"), endpoint: POST localhost:8080/characters/cualquiera
+    @PostMapping
     public ResponseEntity<FigureDTO> save(@RequestBody FigureDTO figure){
         FigureDTO figureSaved = figureService.save(figure);
         return ResponseEntity.status(HttpStatus.CREATED).body(figureSaved);
@@ -48,12 +41,15 @@ public class FigureController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FigureBasicDTO>> search (
+    public ResponseEntity<List<FigureBasicDTO>> getDetailsByFilters (
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) Integer age,
-            @RequestParam(required = false) Double weight
-    ) {
-        List<FigureBasicDTO> figures = this.figureService.search(name, age, weight);
+            @RequestParam(required = false) String age,
+            @RequestParam(required = false) String weight,
+            @RequestParam(required = false) Set<Long> movies,
+            @RequestParam(required = false, defaultValue = "ASC") String order) {
+
+        List<FigureBasicDTO> figures = this.figureService.getByFilters(name, age, weight, movies, order);
+
         return ResponseEntity.ok().body(figures);
     }
 }

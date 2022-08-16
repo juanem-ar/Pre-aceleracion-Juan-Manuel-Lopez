@@ -1,12 +1,16 @@
 package com.alkemy.disney.mapper;
 
+import com.alkemy.disney.dto.FigureBasicDTO;
 import com.alkemy.disney.dto.FigureDTO;
+import com.alkemy.disney.dto.MovieBasicDTO;
 import com.alkemy.disney.dto.MovieDTO;
 import com.alkemy.disney.entity.FigureEntity;
 import com.alkemy.disney.entity.MovieEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +33,20 @@ public class MovieMapper {
         //List<FigureDTO> dtos = this.figureMapper.figureEntityList2DTOList(dto.getFigures(), false);
         //Set<FigureEntity> entities = this.figureMapper.figureDTOSet2EntitySet(dtos);
         return entity;
+    }
+    public MovieBasicDTO movieEntity2BasicDTO(MovieEntity entity){
+        MovieBasicDTO dto = new MovieBasicDTO();
+        dto.setImage(entity.getImage());
+        dto.setTitle(entity.getTitle());
+        dto.setCreationDate(entity.getCreationDate());
+        return dto;
+    }
+    public List<MovieBasicDTO> movieEntitySet2DTOBasicList(List<MovieEntity> entities){
+        List<MovieBasicDTO> dtos = new ArrayList<>();
+        for (MovieEntity entity: entities){
+            dtos.add(this.movieEntity2BasicDTO(entity));
+        }
+        return dtos;
     }
 
     public MovieDTO movieEntity2DTO(MovieEntity entity, boolean loadCharacters){

@@ -29,7 +29,4 @@ public class FigureEntity {
 
     @ManyToMany(mappedBy = "figures", cascade = CascadeType.ALL)
     private List<MovieEntity> movies = new ArrayList<>();
-
-    public void addMovie(MovieEntity movie){this.movies.add(movie);}
-    public void removeMovie(MovieEntity movie){this.movies.remove(movie);}
 }

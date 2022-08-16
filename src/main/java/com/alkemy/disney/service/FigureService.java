@@ -12,10 +12,10 @@ import java.util.Set;
 
 public interface FigureService {
     FigureDTO save(FigureDTO dto);
-    List<FigureDTO> getAllFigures();
+    FigureDTO getFigureById(Long id);
     FigureDTO update(Long id, FigureDTO figure);
     void delete (Long id);
+    List<FigureBasicDTO> getByFilters(String name, String age, String weight, Set<Long> movies, String order);
 
-    List<FigureBasicDTO> search(String name, Integer age,Double weight);
 
 }

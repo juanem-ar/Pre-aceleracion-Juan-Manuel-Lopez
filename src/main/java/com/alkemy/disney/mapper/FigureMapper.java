@@ -46,7 +46,6 @@ public class FigureMapper {
 
     public FigureBasicDTO figureEntity2BasicDTO(FigureEntity entity){
         FigureBasicDTO dto = new FigureBasicDTO();
-        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setImage(entity.getImage());
         return dto;

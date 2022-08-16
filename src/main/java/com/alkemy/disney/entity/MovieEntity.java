@@ -50,4 +50,7 @@ public class MovieEntity {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name="figure_id"))
     private Set<FigureEntity> figures = new HashSet<>();
+
+    public void addFigure(FigureEntity figure){this.figures.add(figure);}
+    public void removeFigure(FigureEntity figure){this.figures.remove(figure);}
 }

@@ -2,24 +2,30 @@ package com.alkemy.disney.service.impl;
 
 import com.alkemy.disney.dto.FigureBasicDTO;
 import com.alkemy.disney.dto.FigureDTO;
+import com.alkemy.disney.dto.FigureFiltersDTO;
 import com.alkemy.disney.entity.FigureEntity;
 import com.alkemy.disney.entity.MovieEntity;
 import com.alkemy.disney.mapper.FigureMapper;
 import com.alkemy.disney.repository.FigureRepository;
+import com.alkemy.disney.repository.specifications.FigureSpecification;
 import com.alkemy.disney.service.FigureService;
-import net.bytebuddy.asm.Advice;
+
+import com.alkemy.disney.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class FigureServiceImpl implements FigureService {
     @Autowired
     private FigureMapper figureMapper;
+    @Autowired
+    private FigureSpecification figureSpecification;
 
+    @Autowired
+    private MovieService movieService;
     @Autowired
     private FigureRepository figureRepository;
 
@@ -30,9 +36,9 @@ public class FigureServiceImpl implements FigureService {
         return result;
     }
 
-    public List<FigureDTO> getAllFigures() {
-        List<FigureEntity> entities = figureRepository.findAll();
-        List<FigureDTO> result = figureMapper.figureEntityList2DTOList(entities, true);
+    public FigureDTO getFigureById(Long id) {
+        FigureEntity entity = figureRepository.getReferenceById(id);
+        FigureDTO result = figureMapper.figureEntity2DTO(entity, true);
         return result;
     }
 
@@ -50,10 +56,11 @@ public class FigureServiceImpl implements FigureService {
         this.figureRepository.deleteById(id);
     }
 
-    public List<FigureBasicDTO> search(String name, Integer age,Double weight){
-        List<FigureEntity> entities = figureRepository.findByNameAndAgeOrWeight(name, age, weight);
-        List<FigureBasicDTO> result = figureMapper.figureEntitySet2DTOBasicList(entities);
-        return result;
+    public List<FigureBasicDTO> getByFilters(String name, String age, String weight, Set<Long> movies, String order){
+        FigureFiltersDTO filtersDTO = new FigureFiltersDTO(name, age, weight, movies, order);
+        List<FigureEntity> entities = this.figureRepository.findAll(this.figureSpecification.getByFilters(filtersDTO));
+        List<FigureBasicDTO> dtos = this.figureMapper.figureEntitySet2DTOBasicList(entities);
+        return dtos;
     }
 
 
