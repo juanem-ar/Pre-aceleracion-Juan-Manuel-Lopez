@@ -27,6 +27,6 @@ public class FigureEntity {
 
     private boolean deleted = Boolean.FALSE;
 
-    @ManyToMany(mappedBy = "figures", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "figures", cascade = CascadeType.PERSIST)
     private List<MovieEntity> movies = new ArrayList<>();
 }

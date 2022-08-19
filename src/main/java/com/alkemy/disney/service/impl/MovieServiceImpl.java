@@ -15,6 +15,7 @@ import com.alkemy.disney.service.FigureService;
 import com.alkemy.disney.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class MovieServiceImpl implements MovieService {
     }
     @Override
     public MovieDTO getMovieById(Long id) {
-        isCorrect(id);
+        isCorrect(id, "id");
         MovieEntity entity = movieRepository.getReferenceById(id);
         MovieDTO result = movieMapper.movieEntity2DTO(entity, true);
         return result;
@@ -49,7 +50,7 @@ public class MovieServiceImpl implements MovieService {
 
 
     public MovieDTO update(Long id, MovieDTO movie) {
-        isCorrect(id);
+        isCorrect(id, "id");
         MovieEntity entityId = movieRepository.getReferenceById(id);
         MovieEntity entity = movieMapper.update(entityId,movie);
         MovieEntity entityUpdated = movieRepository.save(entity);
@@ -58,13 +59,13 @@ public class MovieServiceImpl implements MovieService {
     }
     @Override
     public void delete(Long id) {
-        isCorrect(id);
+        isCorrect(id, "id");
         this.movieRepository.deleteById(id);
     }
 
     @Override
     public MovieDTO addFigure(Long idMovie, Long idFigure) {
-        areCorrect(idMovie, idFigure);
+        //areCorrect(idMovie, "Movie", idFigure, "Figure");
         MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
         movieEntity.addFigure(figureEntity);
@@ -75,7 +76,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDTO removeFigure(Long idMovie, Long idFigure) {
-        areCorrect(idMovie, idFigure);
+        //areCorrect(idMovie, "Movie", idFigure, "Figure");
         MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
         movieEntity.removeFigure(figureEntity);
@@ -89,16 +90,14 @@ public class MovieServiceImpl implements MovieService {
         List<MovieBasicDTO> dtos = this.movieMapper.movieEntitySet2DTOBasicList(entities);
         return dtos;
     }
-    public void isCorrect(Long id){
-        if(!movieRepository.existsById(id)){
-            throw new ParamNotFound("Invalid id");
+    public void isCorrect(Long id, String nombre){
+        boolean existId = movieRepository.existsById(id);
+        if(!existId){
+            throw new ParamNotFound("Invalid " + nombre);
         }
     }
-    public void areCorrect(Long idMovie, Long idFigure){
-        if(!movieRepository.existsById(idMovie)){
-            throw new ParamNotFound("Invalid Movie ID");
-        }else if(!movieRepository.existsById(idFigure)){
-            throw new ParamNotFound("Invalid Character ID");
-        }
+    public void areCorrect(Long idMovie, String movie, Long idFigure, String figure){
+        isCorrect(idMovie, "movie");
+        isCorrect(idFigure, "figure");
     }
 }
