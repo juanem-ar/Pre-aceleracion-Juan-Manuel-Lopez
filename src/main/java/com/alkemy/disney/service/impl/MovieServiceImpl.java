@@ -53,25 +53,19 @@ public class MovieServiceImpl implements MovieService {
         this.movieRepository.deleteById(id);
     }
     @Override
-    public MovieDTO addFigure(Long idMovie, Long idFigure) {
-        areCorrect(idMovie, "movie", idFigure, "figure");
-        MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
-        FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
-        movieEntity.addFigure(figureEntity);
-        MovieEntity movieSaved = movieRepository.save(movieEntity);
-        MovieDTO dto = movieMapper.movieEntity2DTO(movieSaved, true);
-        return dto;
+    public void addFigures(Long idMovie, Long idFigure) {
+        MovieEntity movieEntity = this.movieRepository.getReferenceById(idMovie);
+        FigureEntity figureEntity = this.figureRepository.getReferenceById(idFigure);
+        movieEntity.getFigures().add(figureEntity);
+        this.movieRepository.save(movieEntity);
     }
 
     @Override
-    public MovieDTO removeFigure(Long idMovie, Long idFigure) {
-        areCorrect(idMovie, "movie", idFigure, "figure");
-        MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
-        FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
-        movieEntity.removeFigure(figureEntity);
-        MovieEntity movieSaved = movieRepository.save(movieEntity);
-        MovieDTO dto = movieMapper.movieEntity2DTO(movieSaved, true);
-        return dto;
+    public void removeFigures(Long idMovie, Long idFigure) {
+        MovieEntity movieEntity = this.movieRepository.getReferenceById(idMovie);
+        FigureEntity figureEntity = this.figureRepository.getReferenceById(idFigure);
+        movieEntity.getFigures().remove(figureEntity);
+        this.movieRepository.save(movieEntity);
     }
     public List<MovieBasicDTO> getByFilters(String title, String genre, String order){
         MovieFiltersDTO filtersDTO = new MovieFiltersDTO(title, genre, order);
@@ -83,9 +77,5 @@ public class MovieServiceImpl implements MovieService {
         if(!movieRepository.existsById(id)){
             throw new ParamNotFound("Invalid " + name);
         }
-    }
-    public void areCorrect(Long idOne, String nameOne, Long idTwo, String nameTwo) {
-        isCorrect(idOne, nameOne);
-        isCorrect(idTwo, nameTwo);
     }
 }

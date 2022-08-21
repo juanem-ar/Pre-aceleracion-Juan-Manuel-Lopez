@@ -2,6 +2,7 @@ package com.alkemy.disney.controller;
 
 import com.alkemy.disney.dto.MovieBasicDTO;
 import com.alkemy.disney.dto.MovieDTO;
+import com.alkemy.disney.entity.MovieEntity;
 import com.alkemy.disney.service.FigureService;
 import com.alkemy.disney.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("movies")
@@ -42,14 +44,14 @@ public class MovieController {
     }
 
     @PostMapping("/{idMovie}/characters/{idCharacter}")
-    public ResponseEntity<MovieDTO> addFigure(@PathVariable Long idMovie, @PathVariable Long idCharacter){
-        this.movieService.addFigure(idMovie, idCharacter);
+    public ResponseEntity<Set<MovieEntity>> addFigure(@PathVariable Long idMovie, @PathVariable Long idCharacter){
+        this.movieService.addFigures(idMovie, idCharacter);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
     @DeleteMapping("/{idMovie}/characters/{idCharacter}")
-    public ResponseEntity<MovieDTO> removeFigure(@PathVariable Long idMovie, @PathVariable Long idCharacter){
-        this.movieService.removeFigure(idMovie, idCharacter);
+    public ResponseEntity<Set<MovieEntity>> removeFigure(@PathVariable Long idMovie, @PathVariable Long idCharacter){
+        this.movieService.removeFigures(idMovie, idCharacter);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }

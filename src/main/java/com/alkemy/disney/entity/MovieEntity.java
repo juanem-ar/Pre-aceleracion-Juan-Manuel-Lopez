@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 import com.alkemy.disney.dto.FigureDTO;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class MovieEntity {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate creationDate;
 
+    @Size(min = 1, max = 5)
     private Integer rating;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -51,6 +53,4 @@ public class MovieEntity {
             inverseJoinColumns = @JoinColumn(name="figure_id"))
     private Set<FigureEntity> figures = new HashSet<>();
 
-    public void addFigure(FigureEntity figure){this.figures.add(figure);}
-    public void removeFigure(FigureEntity figure){this.figures.remove(figure);}
 }
