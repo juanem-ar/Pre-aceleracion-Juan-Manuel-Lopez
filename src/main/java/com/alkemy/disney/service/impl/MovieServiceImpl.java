@@ -65,7 +65,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDTO addFigure(Long idMovie, Long idFigure) {
-        //areCorrect(idMovie, "Movie", idFigure, "Figure");
+        areCorrect(idMovie, "movie", idFigure, "figure");
         MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
         movieEntity.addFigure(figureEntity);
@@ -76,7 +76,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDTO removeFigure(Long idMovie, Long idFigure) {
-        //areCorrect(idMovie, "Movie", idFigure, "Figure");
+        areCorrect(idMovie, "movie", idFigure, "figure");
         MovieEntity movieEntity = movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = figureRepository.getReferenceById(idFigure);
         movieEntity.removeFigure(figureEntity);
@@ -90,14 +90,13 @@ public class MovieServiceImpl implements MovieService {
         List<MovieBasicDTO> dtos = this.movieMapper.movieEntitySet2DTOBasicList(entities);
         return dtos;
     }
-    public void isCorrect(Long id, String nombre){
-        boolean existId = movieRepository.existsById(id);
-        if(!existId){
-            throw new ParamNotFound("Invalid " + nombre);
+    public void isCorrect(Long id, String name){
+        if(!movieRepository.existsById(id)){
+            throw new ParamNotFound("Invalid " + name);
         }
     }
-    public void areCorrect(Long idMovie, String movie, Long idFigure, String figure){
-        isCorrect(idMovie, "movie");
-        isCorrect(idFigure, "figure");
+    public void areCorrect(Long idOne, String nameOne, Long idTwo, String nameTwo) {
+        isCorrect(idOne, nameOne);
+        isCorrect(idTwo, nameTwo);
     }
 }
