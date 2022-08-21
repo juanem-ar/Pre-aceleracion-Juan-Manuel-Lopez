@@ -6,3 +6,8 @@
 
 ### Perspectiva del producto:
 Disney API REST es un producto diseñado para obtener información detallada sobre las películas del mundo Disney, conocer todos sus personajes, su informacón detallada y también conocer en que otras películas estos personajes también participaron.
+
+
+### Documentación del proyecto:
+
+https://documenter.getpostman.com/view/20891741/VUqpscyN
