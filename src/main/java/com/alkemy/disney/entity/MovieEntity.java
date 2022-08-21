@@ -35,7 +35,7 @@ public class MovieEntity {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "gender_id", insertable = false, updatable = false)
-    private GenderEntity gender; //buscar la info de la tabla generos
+    private GenderEntity gender;
 
     @Column(name="gender_id", nullable = false)
     private Long genderId;

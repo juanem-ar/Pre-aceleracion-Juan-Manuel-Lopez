@@ -1,9 +1,7 @@
 package com.alkemy.disney.mapper;
 
 import com.alkemy.disney.dto.GenderDTO;
-import com.alkemy.disney.dto.MovieDTO;
 import com.alkemy.disney.entity.GenderEntity;
-import com.alkemy.disney.entity.MovieEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

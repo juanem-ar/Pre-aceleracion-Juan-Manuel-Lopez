@@ -1,13 +1,9 @@
 package com.alkemy.disney.service;
 
-import com.alkemy.disney.dto.FigureBasicDTO;
-import com.alkemy.disney.dto.FigureDTO;
 import com.alkemy.disney.dto.MovieBasicDTO;
 import com.alkemy.disney.dto.MovieDTO;
-import com.alkemy.disney.entity.MovieEntity;
 
 import java.util.List;
-import java.util.Set;
 
 public interface MovieService {
 

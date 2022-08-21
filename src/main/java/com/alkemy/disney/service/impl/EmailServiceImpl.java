@@ -21,10 +21,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private Environment env;
-
     @Value("${disney.email.sender}")
     private String emailSender;
-
     @Value("${disney.email.enabled}")
     private boolean enabled;
 

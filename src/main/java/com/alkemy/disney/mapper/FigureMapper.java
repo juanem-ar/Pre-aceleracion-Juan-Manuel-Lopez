@@ -26,7 +26,6 @@ public class FigureMapper {
         }
         return entity;
     }
-
     public FigureDTO figureEntity2DTO(FigureEntity entity,boolean loadMovies){
         FigureDTO dto = new FigureDTO();
         dto.setId(entity.getId());
@@ -40,7 +39,6 @@ public class FigureMapper {
             List<MovieEntity> entities = this.movieMapper.movieDTOList2EntityList(dtos, false);
             dto.setMovies(entities);
         }
-
         return dto;
     }
 
@@ -49,14 +47,6 @@ public class FigureMapper {
         dto.setName(entity.getName());
         dto.setImage(entity.getImage());
         return dto;
-    }
-
-    public List<FigureDTO> figureEntityList2DTOList(Collection<FigureEntity> entities, boolean loadMovies){
-        List<FigureDTO> dtos = new ArrayList<>();
-        for(FigureEntity entity: entities){
-            dtos.add(this.figureEntity2DTO(entity, loadMovies));
-        }
-        return dtos;
     }
 
     public List<FigureBasicDTO> figureEntitySet2DTOBasicList(List<FigureEntity> entities){

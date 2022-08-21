@@ -1,7 +1,6 @@
 package com.alkemy.disney.controller;
 
 import com.alkemy.disney.dto.GenderDTO;
-import com.alkemy.disney.dto.MovieDTO;
 import com.alkemy.disney.service.GenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class GenderController {
         return ResponseEntity.ok().body(genders);
     }
 
-    @PostMapping//Agrego ("/cualquiera"), endpoint: POST localhost:8080/continentes/cualquiera
+    @PostMapping
     public ResponseEntity<GenderDTO> save(@RequestBody GenderDTO gender){
         GenderDTO genderSaved = genderService.save(gender);
         return ResponseEntity.status(HttpStatus.CREATED).body(genderSaved);

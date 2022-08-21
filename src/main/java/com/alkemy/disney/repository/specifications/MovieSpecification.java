@@ -1,20 +1,11 @@
 package com.alkemy.disney.repository.specifications;
 
-import com.alkemy.disney.dto.FigureFiltersDTO;
 import com.alkemy.disney.dto.MovieFiltersDTO;
-import com.alkemy.disney.entity.FigureEntity;
 import com.alkemy.disney.entity.MovieEntity;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,25 +2,17 @@ package com.alkemy.disney.service.impl;
 
 import com.alkemy.disney.dto.*;
 import com.alkemy.disney.entity.FigureEntity;
-import com.alkemy.disney.entity.GenderEntity;
 import com.alkemy.disney.entity.MovieEntity;
 import com.alkemy.disney.exception.ParamNotFound;
-import com.alkemy.disney.mapper.GenderMapper;
 import com.alkemy.disney.mapper.MovieMapper;
 import com.alkemy.disney.repository.FigureRepository;
-import com.alkemy.disney.repository.GenderRepository;
 import com.alkemy.disney.repository.MovieRepository;
 import com.alkemy.disney.repository.specifications.MovieSpecification;
-import com.alkemy.disney.service.FigureService;
 import com.alkemy.disney.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -47,8 +39,6 @@ public class MovieServiceImpl implements MovieService {
         MovieDTO result = movieMapper.movieEntity2DTO(entity, true);
         return result;
     }
-
-
     public MovieDTO update(Long id, MovieDTO movie) {
         isCorrect(id, "id");
         MovieEntity entityId = movieRepository.getReferenceById(id);
@@ -62,7 +52,6 @@ public class MovieServiceImpl implements MovieService {
         isCorrect(id, "id");
         this.movieRepository.deleteById(id);
     }
-
     @Override
     public MovieDTO addFigure(Long idMovie, Long idFigure) {
         areCorrect(idMovie, "movie", idFigure, "figure");
