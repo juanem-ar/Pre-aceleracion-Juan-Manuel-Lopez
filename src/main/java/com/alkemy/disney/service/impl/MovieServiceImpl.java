@@ -54,6 +54,7 @@ public class MovieServiceImpl implements MovieService {
     }
     @Override
     public void addFigures(Long idMovie, Long idFigure) {
+        areCorrect(idMovie, "movie", idFigure, "character");
         MovieEntity movieEntity = this.movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = this.figureRepository.getReferenceById(idFigure);
         movieEntity.getFigures().add(figureEntity);
@@ -62,6 +63,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void removeFigures(Long idMovie, Long idFigure) {
+        areCorrect(idMovie, "movie", idFigure, "character");
         MovieEntity movieEntity = this.movieRepository.getReferenceById(idMovie);
         FigureEntity figureEntity = this.figureRepository.getReferenceById(idFigure);
         movieEntity.getFigures().remove(figureEntity);
@@ -78,4 +80,18 @@ public class MovieServiceImpl implements MovieService {
             throw new ParamNotFound("Invalid " + name);
         }
     }
+
+    @Override
+    public void areCorrect(Long idOne, String nameOne, Long idTwo, String nameTwo) {
+        if (!movieRepository.existsById(idOne)&&!figureRepository.existsById(idTwo)){
+            throw new ParamNotFound("Invalid items");
+        }else{
+            isCorrect(idOne, nameOne);
+            if (!figureRepository.existsById(idTwo)){
+                throw new ParamNotFound("Invalid " + nameTwo );
+            }
+        }
+
+    }
+
 }
